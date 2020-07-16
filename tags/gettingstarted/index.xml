@@ -6,18 +6,27 @@
     <description>Recent content in GettingStarted on Gal Zaidman, Personal blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 11 Jul 2020 00:10:00 +0300</lastBuildDate>
+    <lastBuildDate>Thu, 16 Jul 2020 00:10:00 +0300</lastBuildDate>
     
 	<atom:link href="https://gal-zaidman.github.io/tags/gettingstarted/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Managing Hosts With Ansible</title>
-      <link>https://gal-zaidman.github.io/blog/ansible/1.-managing-hosts-with-ansible/</link>
+      <link>https://gal-zaidman.github.io/blog/ansible/2.-managing-hosts-with-ansible/</link>
+      <pubDate>Thu, 16 Jul 2020 00:10:00 +0300</pubDate>
+      
+      <guid>https://gal-zaidman.github.io/blog/ansible/2.-managing-hosts-with-ansible/</guid>
+      <description>When we use ansible we often need to manage remote hosts, those hosts can be bare-metals, VMs, instances running on different clouds and so on.</description>
+    </item>
+    
+    <item>
+      <title>Ansible the What and Why</title>
+      <link>https://gal-zaidman.github.io/blog/ansible/1.-what-is-ansible-and-why/</link>
       <pubDate>Sat, 11 Jul 2020 00:10:00 +0300</pubDate>
       
-      <guid>https://gal-zaidman.github.io/blog/ansible/1.-managing-hosts-with-ansible/</guid>
-      <description>When we use ansible we often need to manage remote hosts, those hosts can be bare-metals, VMs, instances running on different clouds and so on.</description>
+      <guid>https://gal-zaidman.github.io/blog/ansible/1.-what-is-ansible-and-why/</guid>
+      <description>What is Ansible Ansible is an open source automation platform which is being developed by Redhat, it has a very large community of developers from simple users to huge organization.</description>
     </item>
     
   </channel>
