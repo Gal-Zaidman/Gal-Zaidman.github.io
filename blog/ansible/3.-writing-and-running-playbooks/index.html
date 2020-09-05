@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en-us"><head>
+  <meta charset="utf-8">
+  <title>Gal Zaidman, Personal blog</title>
+
+  <!-- mobile responsive meta -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="We will cover how we control and manage hosts with ansible as well as basic host connection configuration">
+  <meta name="author" content="Gal Zaidman">
+  <meta name="generator" content="Hugo 0.72.0" />
+
+  <!-- plugins -->
+  
+  <link rel="stylesheet" href="https://gal-zaidman.github.io/plugins/bootstrap/bootstrap.min.css ">
+  
+  <link rel="stylesheet" href="https://gal-zaidman.github.io/plugins/slick/slick.css ">
+  
+  <link rel="stylesheet" href="https://gal-zaidman.github.io/plugins/themify-icons/themify-icons.css ">
+  
+  <link rel="stylesheet" href="https://gal-zaidman.github.io/plugins/venobox/venobox.css ">
+  
+
+  <!-- Main Stylesheet -->
+  
+  <link rel="stylesheet" href="https://gal-zaidman.github.io/scss/style.min.css" media="screen">
+
+  <!--Favicon-->
+  <link rel="shortcut icon" href="https://gal-zaidman.github.io/images/favicon.png " type="image/x-icon">
+  <link rel="icon" href="https://gal-zaidman.github.io/images/favicon.png " type="image/x-icon">
+
+</head><body>
+<!-- preloader start -->
+<div class="preloader">
+  
+</div>
+<!-- preloader end -->
+<!-- navigation -->
+<header class="navigation">
+  <div class="container">
+    
+    <nav class="navbar navbar-expand-lg navbar-white bg-transparent border-bottom pl-0">
+      <a class="navbar-brand mobile-view" href="https://gal-zaidman.github.io"><img class="img-fluid"
+          src="https://gal-zaidman.github.io/images/logo.png" alt="Gal Zaidman, Personal blog"></a>
+      <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navigation">
+        <i class="ti-menu h3"></i>
+      </button>
+
+      <div class="collapse navbar-collapse text-center" id="navigation">
+        <div class="desktop-view">
+          <ul class="navbar-nav mr-auto">
+            
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.facebook.com/gzaidman1"><i class="ti-facebook"></i></a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link" href="https://github.com/Gal-Zaidman"><i class="ti-github"></i></a>
+            </li>
+            
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.linkedin.com/in/galzaidman/"><i class="ti-linkedin"></i></a>
+            </li>
+            
+          </ul>
+        </div>
+
+        <a class="navbar-brand mx-auto desktop-view" href="https://gal-zaidman.github.io"><img class="img-fluid"
+            src="https://gal-zaidman.github.io/images/logo.png" alt="Gal Zaidman, Personal blog"></a>
+
+        <ul class="navbar-nav">
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://gal-zaidman.github.io/about">About</a>
+          </li>
+          
+          
+          
+          <li class="nav-item">
+            <a class="nav-link" href="https://gal-zaidman.github.io/blog">Blog</a>
+          </li>
+          
+          
+        </ul>
+
+        
+        <!-- search -->
+        <div class="search pl-lg-4">
+          <button id="searchOpen" class="search-btn"><i class="ti-search"></i></button>
+          <div class="search-wrapper">
+            <form action="https://gal-zaidman.github.io/search" class="h-100">
+              <input class="search-box px-4" id="search-query" name="s" type="search" placeholder="Type & Hit Enter...">
+            </form>
+            <button id="searchClose" class="search-close"><i class="ti-close text-dark"></i></button>
+          </div>
+        </div>
+        
+
+        
+      </div>
+    </nav>
+  </div>
+</header>
+<!-- /navigation -->
+
+<section class="section-sm">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        
+        <h1>Writing and Running Playbooks</h1>
+        <h4>Ansible zero to hero, Part 3</h4>
+        <div class="mb-3 post-meta">
+          <span>By Gal Zaidman</span>
+          
+          <span>,&nbsp;</span>
+          <span>05 September 2020</span>
+          
+        </div>
+        
+        <a href="/tags/ansible"
+          class="text-primary pr-1">#Ansible</a>
+        
+        <a href="/tags/fullcourse"
+          class="text-primary pr-1">#Full course</a>
+        
+        <a href="/tags/gettingstarted"
+          class="text-primary pr-1">#Getting started</a>
+        
+        <div class="content mb-5 pt-3">
+          <p>Playbooks are the main power of ansible. I like to think of a playbook as an easy to manage script. Playbooks allow us to run multiple sets of tasks called plays, define variables and add logic such as conditions and loops.</p>
+<p>This is an example of a very basic playbook:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">---<span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>first<span style="color:#bbb"> </span>play<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">hosts</span>:<span style="color:#bbb"> </span>web.example.com<span style="color:#bbb"> </span><span style="color:#228b22">#The host must be selected from the inventory</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">vars</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#228b22"># some variable definitions]</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#228b22">#configurations for example</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">order:  # The order in which hosts are selected, options</span>:<span style="color:#bbb"> </span>inventory,<span style="color:#bbb"> </span>reverse_inventory,<span style="color:#bbb"> </span>sorted,<span style="color:#bbb"> </span>reverse_sorted<span style="color:#bbb"> </span>and<span style="color:#bbb"> </span>shuffle<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">remote_user</span>:<span style="color:#bbb"> </span>root<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">become</span>:<span style="color:#bbb"> </span><span style="color:#8b008b;font-weight:bold">true</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">hosts</span>:<span style="color:#bbb"> 
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">tasks</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>first<span style="color:#bbb"> </span>task<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#8b008b;font-weight:bold">yum</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>httpd<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">status</span>:<span style="color:#bbb"> </span>present<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>second<span style="color:#bbb"> </span>task<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#8b008b;font-weight:bold">service</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>httpd<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">enabled</span>:<span style="color:#bbb"> </span><span style="color:#8b008b;font-weight:bold">true</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>second<span style="color:#bbb"> </span>play<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">hosts</span>:<span style="color:#bbb"> </span>database.example.com<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">tasks</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>first<span style="color:#bbb"> </span>task<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#8b008b;font-weight:bold">service</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>mariadb<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">enabled</span>:<span style="color:#bbb"> </span><span style="color:#8b008b;font-weight:bold">true</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>...<span style="color:#bbb">
+</span></code></pre></div><p>So to clarify the terminology:</p>
+<ul>
+<li>task: a single action in the playbook, each task uses a single ansible module to perform the action.</li>
+<li>play: ordered set of tasks.</li>
+<li>playbook: text file containing a list of one or more plays to run in a specific order.</li>
+</ul>
+<p>In the example we see a playbook that contains 2 plays, this playbook is a simple YAML file that the ansible command can get as an input and run.
+Like any languadge ansible playbooks have specific syntax we need to use when writing them, here are some points we need to keep in mind:</p>
+<ul>
+<li>Playbooks are written in YAML format.</li>
+<li>Uses indentation with <strong>space</strong> characters (tab characters are not allowed) a convention is to use 2 spaces for indentation, but it can be more.</li>
+<li>Can use blank lines for readability.</li>
+<li>Data elements at the same level in the hierarchy must have the same indentation.</li>
+<li>Items that are children of another item must be indented more than their parents.</li>
+<li>Begins with a line consisting of three dashes (&mdash;) as a start of document marker, and optionally ends with three dots (&hellip;).</li>
+<li>Multi line strings can be written in 2 ways:
+<ul>
+<li>
+<p>vertical bar (|) - newline characters within the string are preserved.</p>
+</li>
+<li>
+<p>greater-than (&gt;) - newline characters are to be converted to spaces and that leading white spaces are removed.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#8b008b;font-weight:bold">include_newlines</span>:<span style="color:#bbb"> </span><span style="color:#cd5555">|
+</span><span style="color:#cd5555">        Example Company</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#b452cd">123</span><span style="color:#bbb"> </span>Main<span style="color:#bbb"> </span>Street<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>Atlanta,<span style="color:#bbb"> </span>GA<span style="color:#bbb"> </span><span style="color:#b452cd">30303</span><span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#8b008b;font-weight:bold">fold_newlines</span>:<span style="color:#bbb"> </span><span style="color:#cd5555">&gt;
+</span><span style="color:#cd5555">        This is an example</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>of<span style="color:#bbb"> </span>a<span style="color:#bbb"> </span>long<span style="color:#bbb"> </span>string,<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>that<span style="color:#bbb"> </span>will<span style="color:#bbb"> </span>become<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>a<span style="color:#bbb"> </span>single<span style="color:#bbb"> </span>sentence<span style="color:#bbb"> </span>once<span style="color:#bbb"> </span>folded.<span style="color:#bbb">
+</span></code></pre></div></li>
+</ul>
+</li>
+</ul>
+<p>To verify that the syntax is correct:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ansible-plybook --syntax-check
+</code></pre></div><p>** See <a href="https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html">Ansible docs</a> for more examples and clarification.</p>
+<h2 id="remote-users-and-privilege-escalation-in-plays">Remote Users and Privilege Escalation in Plays</h2>
+<p>Plays can override the user and privileges set on the configuration file.
+The following keys are available for configuration within a play:</p>
+<ul>
+<li>remote_user</li>
+<li>become boolean - enable or disable privilege escalation.</li>
+<li>become_method - define the privilege escalation method.</li>
+<li>become_user - the user account to use for privilege escalation.</li>
+</ul>
+<h2 id="running-playbooks">Running Playbooks</h2>
+<p>To run an ansible playbook we just use the ansible-playbook command:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ansible-playbook PLAYBOOK_FILE
+</code></pre></div><p>We can run a playbook as dry-run to see what would happen without really change anything on the hosts:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ansible-playbook -C PLAYBOOK_FILE
+</code></pre></div><p>We can also change the verbosity level:</p>
+<ol>
+<li>-v The task results are displayed.</li>
+<li>-vv Both task results and task configuration are displayed.</li>
+<li>-vvv Includes information about connections to managed hosts.</li>
+<li>-vvvv Adds extra verbosity options to the connection plug-ins, including users being used in the managed hosts to execute scripts, and what scripts have been executed.</li>
+</ol>
+<p>One of the most important features of playbooks is that it should be safe to re-running. Meaning that if a specific task needs to do something that as already been done it will not be executed, this saves us a lot of problems.</p>
+<p>Most ansible modules are safe to re-run and that makes our life easier when writing the playbook, but we need to keep in mind that some modules are not safe like the command and shell modules. We need to be careful when writing a playbook that uses unsafe modules and add some condition to not run the task in case the desired outcome as already been reached.</p>
+<h2 id="ansible-variables">Ansible Variables</h2>
+<p>Ansible variables are the same as any other language they are used to store values that can be reused, or hold outputs from previous commands. This can simplify the creation and maintenance of a playbook.
+In the above example we saw a very simple playbook that installed the httpd package and restarted the httpd service, we could have used a variable to hold the httpd value.</p>
+<p>Variables can be defined in many places but the main scopes are:</p>
+<ol>
+<li>Global scope - set from the command line or Ansible configuration.</li>
+</ol>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb">    </span>ansible-playbook<span style="color:#bbb"> </span>main.yml<span style="color:#bbb"> </span>-e<span style="color:#bbb"> </span><span style="color:#cd5555">&#34;package=apache&#34;</span><span style="color:#bbb">
+</span></code></pre></div><ol start="2">
+<li>
+<p>Play scope - set in the play and related structures.</p>
+<ul>
+<li>Vars block at the beginning of a play:</li>
+</ul>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb">    </span>- <span style="color:#8b008b;font-weight:bold">hosts</span>:<span style="color:#bbb"> </span>all<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">vars</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">user</span>:<span style="color:#bbb"> </span>joe<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">home</span>:<span style="color:#bbb"> </span>/home/joe<span style="color:#bbb">
+</span></code></pre></div><ul>
+<li>variables in external files. the vars_files contains a list of names for external variable files relative to the location of the playbook:</li>
+</ul>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb">    </span><span style="color:#228b22"># playbook:</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span>...<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>- <span style="color:#8b008b;font-weight:bold">hosts</span>:<span style="color:#bbb"> </span>all<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">vars_files</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span>- vars/users.yml<span style="color:#bbb">
+</span><span style="color:#bbb">     </span>...<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#228b22"># cat users.yml:</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span><span style="color:#8b008b;font-weight:bold">user</span>:<span style="color:#bbb"> </span>joe<span style="color:#bbb">
+</span><span style="color:#bbb">     </span><span style="color:#8b008b;font-weight:bold">home</span>:<span style="color:#bbb"> </span>/home/joe<span style="color:#bbb">
+</span></code></pre></div></li>
+<li>
+<p>Host scope:</p>
+</li>
+</ol>
+<ul>
+<li>set on host groups and individual hosts by the inventory (like we saw on part 2).</li>
+<li>fact gathering - When ansible logs into a host he gathers facts about this host. The facts are saved into several variables that can be used within the playbook.
+See <a href="https://docs.ansible.com/ansible/latest/reference_appendices/special_variables.html#facts">facts</a> and <a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variables-discovered-from-systems-facts">discovered system facts</a></li>
+<li>registered tasks - When we run a task we can register the result of that task as a variable</li>
+</ul>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">- <span style="color:#8b008b;font-weight:bold">hosts</span>:<span style="color:#bbb"> </span>web_servers<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">tasks</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#8b008b;font-weight:bold">shell</span>:<span style="color:#bbb"> </span>/usr/bin/foo<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#8b008b;font-weight:bold">register</span>:<span style="color:#bbb"> </span>foo_result<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#8b008b;font-weight:bold">ignore_errors</span>:<span style="color:#bbb"> </span>True<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#8b008b;font-weight:bold">shell</span>:<span style="color:#bbb"> </span>/usr/bin/bar<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#8b008b;font-weight:bold">when</span>:<span style="color:#bbb"> </span>foo_result.rc<span style="color:#bbb"> </span>==<span style="color:#bbb"> </span><span style="color:#b452cd">5</span><span style="color:#bbb">
+</span></code></pre></div><ol start="4">
+<li>Magic variables - contain information about Ansible operations, including the python version being used, the hosts and groups in inventory, and the directories for playbooks and roles. The most commonly used magic variables are hostvars, groups, group_names, and inventory_hostname, see all on <a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variables-discovered-from-systems-facts">Magic variables</a> ans examples on <a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#accessing-information-about-other-hosts-with-magic-variables">Accessing information about other hosts with magic variables</a></li>
+</ol>
+<p>** ansible variables must start with a letter and can only contain letters, numbers, and underscores.</p>
+<p>A variable can be:</p>
+<ol>
+<li>string:</li>
+<li>number:</li>
+<li>list:</li>
+<li>dictionary:</li>
+</ol>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb">   </span><span style="color:#8b008b;font-weight:bold">vars</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">     </span><span style="color:#8b008b;font-weight:bold">user</span>:<span style="color:#bbb"> </span>joe<span style="color:#bbb">        </span><span style="color:#228b22">#string</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span><span style="color:#8b008b;font-weight:bold">id</span>:<span style="color:#bbb"> </span><span style="color:#b452cd">1</span><span style="color:#bbb">            </span><span style="color:#228b22"># number</span><span style="color:#bbb">
+</span><span style="color:#bbb">     </span><span style="color:#8b008b;font-weight:bold">friends_list</span>:<span style="color:#bbb">         </span><span style="color:#228b22"># list</span><span style="color:#bbb">
+</span><span style="color:#bbb">       </span>- cartman<span style="color:#bbb">
+</span><span style="color:#bbb">       </span>- kenny<span style="color:#bbb">
+</span><span style="color:#bbb">     </span><span style="color:#8b008b;font-weight:bold">friends_dict</span>:<span style="color:#bbb">       </span><span style="color:#228b22"># dictionary</span><span style="color:#bbb">
+</span><span style="color:#bbb">       </span><span style="color:#8b008b;font-weight:bold">best</span>:<span style="color:#bbb"> </span>kenny<span style="color:#bbb">
+</span><span style="color:#bbb">       </span><span style="color:#8b008b;font-weight:bold">funnest</span>:<span style="color:#bbb"> </span>cartman<span style="color:#bbb">
+</span></code></pre></div><p>The difference between a list and a dictionary, is that list variables are accessed with an index like friends_list[0] and dictionary variables are accessed with a key like friends_dict[&lsquo;best&rsquo;] or friends_dict.best</p>
+<h3 id="using-variables">Using variables</h3>
+<p>To use the variable in a task we wrap it with curly braces {{ }}, note that we need to use quotes &quot;&rdquo; when a variable is used as the first element:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">tasks</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#228b22"># No need for quotes &#34;&#34; since user is not the first element</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>Creates<span style="color:#bbb"> </span>the<span style="color:#bbb"> </span>user<span style="color:#bbb"> </span>{{<span style="color:#bbb"> </span>user<span style="color:#bbb"> </span>}}<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">user</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#228b22"># Need quotes &#34;&#34; since user is the first element</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span><span style="color:#cd5555">&#34;{{ user }}&#34;</span><span style="color:#bbb">
+</span></code></pre></div><h3 id="variables-precedence">Variables precedence</h3>
+<p>From least to greatest (the last listed variables winning prioritization):</p>
+<ol>
+<li>command line values (eg “-u user”)</li>
+<li>role defaults [1]</li>
+<li>inventory file or script group vars [2]</li>
+<li>inventory group_vars/all [3]</li>
+<li>playbook group_vars/all [3]</li>
+<li>inventory group_vars/* [3]</li>
+<li>playbook group_vars/* [3]</li>
+<li>inventory file or script host vars [2]</li>
+<li>inventory host_vars/* [3]</li>
+<li>playbook host_vars/* [3]</li>
+<li>host facts / cached set_facts [4]</li>
+<li>play vars</li>
+<li>play vars_prompt</li>
+<li>play vars_files</li>
+<li>role vars (defined in role/vars/main.yml)</li>
+<li>block vars (only for tasks in block)</li>
+<li>task vars (only for the task)</li>
+<li>include_vars</li>
+<li>set_facts / registered vars</li>
+<li>role (and include_role) params</li>
+<li>include params</li>
+<li>extra vars (always win precedence)</li>
+</ol>
+<h2 id="writing-loops-and-conditional-tasks">Writing Loops and Conditional Tasks</h2>
+<h3 id="loops">Loops</h3>
+<p>When we write a script we often need to preform some actions multiple times, pull/skip a task until a certain condition is met. Ansible lets you do this with loops and conditional tasks.</p>
+<p>We can iterate a task over a set of items using the <strong>loop</strong> keyword.
+The loop keyword is added in the task level, and takes as a value a list or dictionary of items over which the task should be iterated.
+The variable <strong>{{ item }}</strong> holds the value used during each iteration.</p>
+<p>Example:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#228b22"># Using list</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>firewalld<span style="color:#bbb"> </span>and<span style="color:#bbb"> </span>sshd<span style="color:#bbb"> </span>are<span style="color:#bbb"> </span>running<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">service</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span><span style="color:#cd5555">&#34;{{ item }}&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">state</span>:<span style="color:#bbb"> </span>started<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">loop</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- firewalld<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- sshd<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#228b22"># Using dictionary</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>Users<span style="color:#bbb"> </span>exist<span style="color:#bbb"> </span>and<span style="color:#bbb"> </span>are<span style="color:#bbb"> </span>in<span style="color:#bbb"> </span>the<span style="color:#bbb"> </span>correct<span style="color:#bbb"> </span>groups<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">user</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span><span style="color:#cd5555">&#34;{{ item.name }}&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">state</span>:<span style="color:#bbb"> </span>present<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">groups</span>:<span style="color:#bbb"> </span><span style="color:#cd5555">&#34;{{ item.groups }}&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">loop</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>cartman<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#8b008b;font-weight:bold">groups</span>:<span style="color:#bbb"> </span>wheel<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>kenny<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#8b008b;font-weight:bold">groups</span>:<span style="color:#bbb"> </span>root<span style="color:#bbb">
+</span></code></pre></div><p>Consult the documentation for more advanced looping scenarios <a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_loops.html#complex-loops">link</a>.</p>
+<h4 id="registering-variables-with-a-loop">Registering variables with a loop</h4>
+<p>You can register the output of a loop as a variable. For example:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">- <span style="color:#8b008b;font-weight:bold">shell</span>:<span style="color:#bbb"> </span><span style="color:#cd5555">&#34;echo {{ item }}&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">loop</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#cd5555">&#34;one&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#cd5555">&#34;two&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">register</span>:<span style="color:#bbb"> </span>echo<span style="color:#bbb">
+</span></code></pre></div><p>When you use register with a loop, the data structure placed in the variable will contain a results attribute that is a list of all responses from the module.</p>
+<h3 id="conditional-tasks">Conditional Tasks</h3>
+<p>Ansible can use conditionals to execute tasks or plays when certain conditions are met.
+Playbook variables, registered variables, and Ansible facts can all be tested with conditionals. Operators to compare strings, numeric data, and Boolean values are available.</p>
+<p>The <strong>when</strong> statement is used to run a task conditionally.
+In the when statement we define the condition or conditions that needs to be meet the execute the task. We can use <strong>and, or, ()</strong> to combine multiple conditions</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">---<span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>Simple<span style="color:#bbb"> </span>Boolean<span style="color:#bbb"> </span>Task<span style="color:#bbb"> </span>Demo<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">hosts</span>:<span style="color:#bbb"> </span>all<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">vars</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">s_name</span>:<span style="color:#bbb"> </span>my_service<span style="color:#bbb">
+</span><span style="color:#bbb">  </span><span style="color:#8b008b;font-weight:bold">tasks</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span><span style="color:#cd5555">&#34;{{ s_name }} is started when there is enough memory&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#8b008b;font-weight:bold">service</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span><span style="color:#cd5555">&#34;{{ s_name }}&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">state</span>:<span style="color:#bbb"> </span>started<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#8b008b;font-weight:bold">when</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>- ansible_memfree_mb<span style="color:#bbb"> </span>&gt;<span style="color:#bbb"> </span><span style="color:#b452cd">8192</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span>- ansible_distribution<span style="color:#bbb"> </span>==<span style="color:#bbb"> </span><span style="color:#cd5555">&#34;RedHat&#34;</span><span style="color:#bbb">
+</span></code></pre></div><h4 id="example-conditionals">Example Conditionals:</h4>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Equal (value is a string)   |   <span style="color:#00688b">ansible_machine</span> == <span style="color:#cd5555">&#34;x86_64&#34;</span>
+Equal (value is numeric)    |   <span style="color:#00688b">max_memory</span> == <span style="color:#b452cd">512</span>
+Numeric comparessions       |   &lt; | &gt; | &lt;= | =&gt; | !=
+Variable exists             |   min_memory is defined
+Variable does not exist     |   min_memory is not defined
+Boolean variable is <span style="color:#658b00">true</span>    |   memory_available
+Boolean variable is <span style="color:#658b00">false</span>   |   not memory_available
+element in linst            |	ansible_distribution in supported_distros
+
+<span style="color:#228b22"># OR</span>
+- when: <span style="color:#00688b">ansible_distribution</span> == <span style="color:#cd5555">&#34;RedHat&#34;</span> or <span style="color:#00688b">ansible_distribution</span> == <span style="color:#cd5555">&#34;Fedora&#34;</span>
+
+<span style="color:#228b22"># And</span>
+- when: <span style="color:#00688b">ansible_distribution_version</span> == <span style="color:#cd5555">&#34;7.5&#34;</span> and <span style="color:#00688b">ansible_kernel</span> == <span style="color:#cd5555">&#34;3.10.0-327.el7.x86_64&#34;</span>
+
+- when:
+  - <span style="color:#00688b">ansible_distribution_version</span> == <span style="color:#cd5555">&#34;7.5&#34;</span>
+  - <span style="color:#00688b">ansible_kernel</span> == <span style="color:#cd5555">&#34;3.10.0-327.el7.x86_64&#34;</span>
+
+<span style="color:#228b22"># Combine conditions</span>
+- when: &gt;
+    ( <span style="color:#00688b">ansible_distribution</span> == <span style="color:#cd5555">&#34;RedHat&#34;</span> and
+      <span style="color:#00688b">ansible_distribution_major_version</span> == <span style="color:#cd5555">&#34;7&#34;</span> )
+    or
+    ( <span style="color:#00688b">ansible_distribution</span> == <span style="color:#cd5555">&#34;Fedora&#34;</span> and
+    <span style="color:#00688b">ansible_distribution_major_version</span> == <span style="color:#cd5555">&#34;28&#34;</span> )
+</code></pre></div><h2 id="ansible-handlers">Ansible Handlers</h2>
+<p>Playbooks have a basic event system that can be used to respond to changes made by tasks in the playbook.
+These ‘events’ are used to notify the playbook on certain actions and they are triggered by the <strong>notify</strong> keyword. The events are triggered at the end of each block of tasks in a play, and will only be triggered once even if notified by multiple different tasks.</p>
+<p>Each event or ‘notify‘ statment can have a handler to handle the event. Handlers are tasks that respond to a notification triggered by other tasks. Handlers can be considered as inactive tasks that only get triggered when explicitly invoked using a <strong>notify statement</strong>.</p>
+<p>Example:
+Apache server is only restarted by the restart apache handler when a configuration file is updated and notifies it:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#8b008b;font-weight:bold">tasks</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>copy<span style="color:#bbb"> </span>demo.example.conf<span style="color:#bbb"> </span>configuration<span style="color:#bbb"> </span>template<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">template</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#8b008b;font-weight:bold">src</span>:<span style="color:#bbb"> </span>/var/lib/templates/demo.example.conf.template<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#8b008b;font-weight:bold">dest</span>:<span style="color:#bbb"> </span>/etc/httpd/conf.d/demo.example.conf<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">notify</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span>- restart<span style="color:#bbb"> </span>apache<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#8b008b;font-weight:bold">handlers</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">  </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>restart<span style="color:#bbb"> </span>apache<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">service</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>httpd<span style="color:#bbb">
+</span><span style="color:#bbb">      </span><span style="color:#8b008b;font-weight:bold">state</span>:<span style="color:#bbb"> </span>restarted<span style="color:#bbb">
+</span></code></pre></div><p>Some notes to keep in mind:</p>
+<ul>
+<li>Tasks only notify their handlers when the task changes something on a managed host.</li>
+<li>Use unique handler names. If you trigger more than one handler with the same name, the first one(s) get overwritten. Only the last one defined will run.</li>
+<li>Each handler is triggered at the <strong>end of a block of tasks</strong> in a playbook.</li>
+<li>If more than one task notifies a handler, the handler only runs once after all other tasks in the block have completed. If no tasks notify it, a handler will not run.</li>
+<li>A task may call more than one handler in its notify section.</li>
+<li>Handlers always run in the order specified by the handlers section of the play. They do not run in the order in which they are listed by notify statements in a task, or in the order in which tasks notify them.</li>
+<li>Handlers normally run after all other tasks in the play complete. A handler called by a task in the tasks part of the playbook will not run until all tasks under tasks have been processed. (There are some minor exceptions to this.)</li>
+</ul>
+<p><strong>IMPORTANT</strong>
+Handlers are meant to perform an extra action when a task makes a change to a managed host. They should not be used as a replacement for normal tasks.</p>
+<h3 id="handling-errors-on-a-play">Handling Errors on a Play</h3>
+<p>Ansible evaluates the return code of each task to determine whether the task succeeded or failed. Normally, when a task fails Ansible immediately aborts the rest of the play on that host, skipping all subsequent tasks.
+However, sometimes you might want to have play execution continue even if a task, there are a number of approaches to this, depending on the desired outcome:</p>
+<ul>
+<li>
+<p><strong>Ignoring Task Failure:</strong>
+We can ignore failed tasks with the <strong>ignore_errors</strong> keyword.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>Latest<span style="color:#bbb"> </span>version<span style="color:#bbb"> </span>of<span style="color:#bbb"> </span>notapkg<span style="color:#bbb"> </span>is<span style="color:#bbb"> </span>installed<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#8b008b;font-weight:bold">yum</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>notapkg<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">state</span>:<span style="color:#bbb"> </span>latest<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#8b008b;font-weight:bold">ignore_errors</span>:<span style="color:#bbb"> </span>yes<span style="color:#bbb">
+</span></code></pre></div></li>
+<li>
+<p><strong>Forcing Execution of Handlers after Task Failure:</strong></p>
+<p>Normally when a task fails and the play aborts on that host, any handlers that had been notified by earlier tasks in the play will not run. If you set <strong>force_handlers: yes</strong> on the play, then notified handlers are called even if the play aborted because a later task failed.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#8b008b;font-weight:bold">hosts</span>:<span style="color:#bbb"> </span>all<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#8b008b;font-weight:bold">force_handlers</span>:<span style="color:#bbb"> </span>yes<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#8b008b;font-weight:bold">tasks</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>a<span style="color:#bbb"> </span>task<span style="color:#bbb"> </span>which<span style="color:#bbb"> </span>always<span style="color:#bbb"> </span>notifies<span style="color:#bbb"> </span>its<span style="color:#bbb"> </span>handler<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">command</span>:<span style="color:#bbb"> </span>/bin/<span style="color:#8b008b;font-weight:bold">true</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">notify</span>:<span style="color:#bbb"> </span>restart<span style="color:#bbb"> </span>the<span style="color:#bbb"> </span>database<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>a<span style="color:#bbb"> </span>task<span style="color:#bbb"> </span>which<span style="color:#bbb"> </span>fails<span style="color:#bbb"> </span>because<span style="color:#bbb"> </span>the<span style="color:#bbb"> </span>package<span style="color:#bbb"> </span>doesn&#39;t<span style="color:#bbb"> </span>exist<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">yum</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>notapkg<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">state</span>:<span style="color:#bbb"> </span>latest<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#8b008b;font-weight:bold">handlers</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>restart<span style="color:#bbb"> </span>the<span style="color:#bbb"> </span>database<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">service</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>mariadb<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">state</span>:<span style="color:#bbb"> </span>restarted<span style="color:#bbb">
+</span></code></pre></div></li>
+<li>
+<p><strong>Specifying Task Failure Conditions:</strong></p>
+<p>You can use the <strong>failed_when</strong> keyword on a task to specify which conditions indicate that the task has failed. This is often used with command modules that may successfully execute a command, but the command&rsquo;s output indicates a failure.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#8b008b;font-weight:bold">tasks</span>:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>Run<span style="color:#bbb"> </span>user<span style="color:#bbb"> </span>creation<span style="color:#bbb"> </span>script<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">shell</span>:<span style="color:#bbb"> </span>/usr/local/bin/create_users.sh<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">register</span>:<span style="color:#bbb"> </span>command_result<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">failed_when</span>:<span style="color:#bbb"> </span><span style="color:#cd5555">&#34;&#39;Password missing&#39; in command_result.stdout&#34;</span><span style="color:#bbb">
+</span></code></pre></div><p>The fail module can also be used to force a task failure. The above scenario can alternatively be written as two tasks:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#8b008b;font-weight:bold">tasks</span>:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>Run<span style="color:#bbb"> </span>user<span style="color:#bbb"> </span>creation<span style="color:#bbb"> </span>script<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">shell</span>:<span style="color:#bbb"> </span>/usr/local/bin/create_users.sh<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">register</span>:<span style="color:#bbb"> </span>command_result<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">ignore_errors</span>:<span style="color:#bbb"> </span>yes<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>Report<span style="color:#bbb"> </span>script<span style="color:#bbb"> </span>failure<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">fail</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">msg</span>:<span style="color:#bbb"> </span><span style="color:#cd5555">&#34;The password is missing in the output&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">when</span>:<span style="color:#bbb"> </span><span style="color:#cd5555">&#34;&#39;Password missing&#39; in command_result.stdout&#34;</span><span style="color:#bbb">
+</span></code></pre></div><p>You can use the fail module to provide a clear failure message for the task. This approach also enables delayed failure, allowing you to run intermediate tasks to complete or roll back other changes.</p>
+</li>
+<li>
+<p><strong>Specifying When a Task Reports “Changed” Results:</strong></p>
+<p>The <strong>changed_when</strong> keyword can be used to control when a task reports that it has changed.</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>get<span style="color:#bbb"> </span>Kerberos<span style="color:#bbb"> </span>credentials<span style="color:#bbb"> </span>as<span style="color:#bbb"> </span><span style="color:#cd5555">&#34;admin&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">shell</span>:<span style="color:#bbb"> </span>echo<span style="color:#bbb"> </span><span style="color:#cd5555">&#34;{{ krb_admin_pass }}&#34;</span><span style="color:#bbb"> </span>|<span style="color:#bbb"> </span>kinit<span style="color:#bbb"> </span>-f<span style="color:#bbb"> </span>admin<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">changed_when</span>:<span style="color:#bbb"> </span><span style="color:#8b008b;font-weight:bold">false</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#228b22"># changed_when: false  == only reports ok or failed.</span><span style="color:#bbb">
+</span></code></pre></div><div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#8b008b;font-weight:bold">tasks</span>:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#8b008b;font-weight:bold">shell</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">cmd</span>:<span style="color:#bbb"> </span>/usr/local/bin/upgrade-database<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">register</span>:<span style="color:#bbb"> </span>command_result<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">changed_when</span>:<span style="color:#bbb"> </span><span style="color:#cd5555">&#34;&#39;Success&#39; in command_result.stdout&#34;</span><span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">notify</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- restart_database<span style="color:#bbb">
+</span><span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#8b008b;font-weight:bold">handlers</span>:<span style="color:#bbb">
+</span><span style="color:#bbb"></span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>restart_database<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">service</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>mariadb<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">state</span>:<span style="color:#bbb"> </span>restarted<span style="color:#bbb">
+</span></code></pre></div></li>
+<li>
+<p><strong>Ansible Blocks and Error Handling:</strong></p>
+<p>In playbooks, blocks can be used to control how tasks are executed.
+For example, a task block can have a when keyword to apply a conditional to multiple tasks:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>block<span style="color:#bbb"> </span>example<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#8b008b;font-weight:bold">hosts</span>:<span style="color:#bbb"> </span>all<span style="color:#bbb">
+</span><span style="color:#bbb"></span><span style="color:#8b008b;font-weight:bold">tasks</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>installing<span style="color:#bbb"> </span>and<span style="color:#bbb"> </span>configuring<span style="color:#bbb"> </span>Yum<span style="color:#bbb"> </span>versionlock<span style="color:#bbb"> </span>plugin<span style="color:#bbb"> 
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">block</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>package<span style="color:#bbb"> </span>needed<span style="color:#bbb"> </span>by<span style="color:#bbb"> </span>yum<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">yum</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>yum-plugin-versionlock<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">state</span>:<span style="color:#bbb"> </span>present<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>lock<span style="color:#bbb"> </span>version<span style="color:#bbb"> </span>of<span style="color:#bbb"> </span>tzdata<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">lineinfile</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">dest</span>:<span style="color:#bbb"> </span>/etc/yum/pluginconf.d/versionlock.list<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">line</span>:<span style="color:#bbb"> </span>tzdata-2016j<span style="color:#b452cd">-1</span><span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">state</span>:<span style="color:#bbb"> </span>present<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">when</span>:<span style="color:#bbb"> </span>ansible_distribution<span style="color:#bbb"> </span>==<span style="color:#bbb"> </span><span style="color:#cd5555">&#34;RedHat&#34;</span><span style="color:#bbb">
+</span></code></pre></div><p>Blocks also allow for error handling in combination with the <strong>rescue</strong> and <strong>always</strong> statements. If any task in a block fails, tasks in its rescue block are executed in order to recover.</p>
+<ul>
+<li>block: Defines the main tasks to run.</li>
+<li>rescue: Defines the tasks to run if the tasks defined in the block clause fail.</li>
+<li>always: Defines the tasks that will always run independently of the success or failure of tasks defined in the block and rescue clauses.</li>
+</ul>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml"><span style="color:#8b008b;font-weight:bold">tasks</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">    </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>Upgrade<span style="color:#bbb"> </span>DB<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">block</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>upgrade<span style="color:#bbb"> </span>the<span style="color:#bbb"> </span>database<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">shell</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#8b008b;font-weight:bold">cmd</span>:<span style="color:#bbb"> </span>/usr/local/lib/upgrade-database<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">rescue</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>revert<span style="color:#bbb"> </span>the<span style="color:#bbb"> </span>database<span style="color:#bbb"> </span>upgrade<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">shell</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#8b008b;font-weight:bold">cmd</span>:<span style="color:#bbb"> </span>/usr/local/lib/revert-database<span style="color:#bbb">
+</span><span style="color:#bbb">    </span><span style="color:#8b008b;font-weight:bold">always</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">        </span>- <span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>always<span style="color:#bbb"> </span>restart<span style="color:#bbb"> </span>the<span style="color:#bbb"> </span>database<span style="color:#bbb">
+</span><span style="color:#bbb">        </span><span style="color:#8b008b;font-weight:bold">service</span>:<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#8b008b;font-weight:bold">name</span>:<span style="color:#bbb"> </span>mariadb<span style="color:#bbb">
+</span><span style="color:#bbb">            </span><span style="color:#8b008b;font-weight:bold">state</span>:<span style="color:#bbb"> </span>restarted<span style="color:#bbb">
+</span></code></pre></div><p>Note thhat the when condition on a block clause also applies to its rescue and always clauses if present.</p>
+</li>
+</ul>
+
+        </div>
+
+        
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<footer>
+  <div class="container">
+    <div class="row">
+    
+      <div class="col-12 border-top py-4 text-center">
+        | copyright © 2020 <a href="https://themefisher.com">Themefisher</a> All Rights Reserved |
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+  var indexURL = "https://gal-zaidman.github.io/index.json"
+</script>
+<!-- JS Plugins -->
+
+<script src="https://gal-zaidman.github.io/plugins/jQuery/jquery.min.js"></script>
+
+<script src="https://gal-zaidman.github.io/plugins/bootstrap/bootstrap.min.js"></script>
+
+<script src="https://gal-zaidman.github.io/plugins/slick/slick.min.js"></script>
+
+<script src="https://gal-zaidman.github.io/plugins/venobox/venobox.min.js"></script>
+
+<script src="https://gal-zaidman.github.io/plugins/search/fuse.min.js"></script>
+
+<script src="https://gal-zaidman.github.io/plugins/search/mark.js"></script>
+
+<script src="https://gal-zaidman.github.io/plugins/search/search.js"></script>
+
+<!-- Main Script -->
+
+<script src="https://gal-zaidman.github.io/js/script.min.js"></script>
+<!-- google analitycs -->
+<script>
+  (function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+      (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+      m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+  })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+  ga('create', '', 'auto');
+  ga('send', 'pageview');
+</script></body>
+</html>

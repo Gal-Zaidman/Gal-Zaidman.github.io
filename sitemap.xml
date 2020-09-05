@@ -4,51 +4,56 @@
   
   <url>
     <loc>https://gal-zaidman.github.io/tags/ansible/</loc>
-    <lastmod>2020-07-16T00:10:00+03:00</lastmod>
+    <lastmod>2020-09-05T00:10:00+03:00</lastmod>
   </url>
   
   <url>
     <loc>https://gal-zaidman.github.io/categories/ansible/</loc>
-    <lastmod>2020-07-16T00:10:00+03:00</lastmod>
+    <lastmod>2020-09-05T00:10:00+03:00</lastmod>
   </url>
   
   <url>
     <loc>https://gal-zaidman.github.io/blog/</loc>
-    <lastmod>2020-07-16T00:10:00+03:00</lastmod>
+    <lastmod>2020-09-05T00:10:00+03:00</lastmod>
   </url>
   
   <url>
     <loc>https://gal-zaidman.github.io/categories/</loc>
-    <lastmod>2020-07-16T00:10:00+03:00</lastmod>
+    <lastmod>2020-09-05T00:10:00+03:00</lastmod>
   </url>
   
   <url>
     <loc>https://gal-zaidman.github.io/categories/full-course/</loc>
-    <lastmod>2020-07-16T00:10:00+03:00</lastmod>
+    <lastmod>2020-09-05T00:10:00+03:00</lastmod>
   </url>
   
   <url>
     <loc>https://gal-zaidman.github.io/tags/fullcourse/</loc>
-    <lastmod>2020-07-16T00:10:00+03:00</lastmod>
+    <lastmod>2020-09-05T00:10:00+03:00</lastmod>
   </url>
   
   <url>
     <loc>https://gal-zaidman.github.io/</loc>
-    <lastmod>2020-07-16T00:10:00+03:00</lastmod>
+    <lastmod>2020-09-05T00:10:00+03:00</lastmod>
   </url>
   
   <url>
     <loc>https://gal-zaidman.github.io/tags/gettingstarted/</loc>
-    <lastmod>2020-07-16T00:10:00+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://gal-zaidman.github.io/blog/ansible/2.-managing-hosts-with-ansible/</loc>
-    <lastmod>2020-07-16T00:10:00+03:00</lastmod>
+    <lastmod>2020-09-05T00:10:00+03:00</lastmod>
   </url>
   
   <url>
     <loc>https://gal-zaidman.github.io/tags/</loc>
+    <lastmod>2020-09-05T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://gal-zaidman.github.io/blog/ansible/3.-writing-and-running-playbooks/</loc>
+    <lastmod>2020-09-05T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://gal-zaidman.github.io/blog/ansible/2.-managing-hosts-with-ansible/</loc>
     <lastmod>2020-07-16T00:10:00+03:00</lastmod>
   </url>
   
