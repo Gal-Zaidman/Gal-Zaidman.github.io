@@ -3,22 +3,57 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://gal-zaidman.github.io/blog/</loc>
+    <lastmod>2020-09-25T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://gal-zaidman.github.io/categories/</loc>
+    <lastmod>2020-09-25T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://gal-zaidman.github.io/tags/colly/</loc>
+    <lastmod>2020-09-25T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://gal-zaidman.github.io/</loc>
+    <lastmod>2020-09-25T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://gal-zaidman.github.io/tags/golang/</loc>
+    <lastmod>2020-09-25T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://gal-zaidman.github.io/categories/golang/</loc>
+    <lastmod>2020-09-25T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://gal-zaidman.github.io/tags/</loc>
+    <lastmod>2020-09-25T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://gal-zaidman.github.io/blog/golang/web-crawling-in-go-with-colly-learn-go-by-doing/</loc>
+    <lastmod>2020-09-25T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://gal-zaidman.github.io/tags/webcrawling/</loc>
+    <lastmod>2020-09-25T00:10:00+03:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://gal-zaidman.github.io/tags/ansible/</loc>
     <lastmod>2020-09-05T00:10:00+03:00</lastmod>
   </url>
   
   <url>
     <loc>https://gal-zaidman.github.io/categories/ansible/</loc>
-    <lastmod>2020-09-05T00:10:00+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://gal-zaidman.github.io/blog/</loc>
-    <lastmod>2020-09-05T00:10:00+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://gal-zaidman.github.io/categories/</loc>
     <lastmod>2020-09-05T00:10:00+03:00</lastmod>
   </url>
   
@@ -33,17 +68,7 @@
   </url>
   
   <url>
-    <loc>https://gal-zaidman.github.io/</loc>
-    <lastmod>2020-09-05T00:10:00+03:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://gal-zaidman.github.io/tags/gettingstarted/</loc>
-    <lastmod>2020-09-05T00:10:00+03:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://gal-zaidman.github.io/tags/</loc>
     <lastmod>2020-09-05T00:10:00+03:00</lastmod>
   </url>
   
