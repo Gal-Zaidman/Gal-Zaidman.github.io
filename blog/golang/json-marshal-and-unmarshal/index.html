@@ -5,7 +5,7 @@
 
   <!-- mobile responsive meta -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="My personal blog">
+  <meta name="description" content="We will learn how to Marshele and Unmarshale JSON Objects in Golang">
   <meta name="author" content="Gal Zaidman">
   <meta name="generator" content="Hugo 0.72.0" />
 
@@ -108,19 +108,24 @@
     <div class="row">
       <div class="col-lg-8 mx-auto">
         
-        <h1></h1>
-        <h4></h4>
+        <h1>JSON Marsheling and Unmarshaling</h1>
+        <h4>Learn Golang By Doing</h4>
         <div class="mb-3 post-meta">
           <span>By Gal Zaidman</span>
           
           <span>,&nbsp;</span>
-          <span>01 January 0001</span>
+          <span>26 September 2020</span>
           
         </div>
         
+        <a href="/tags/golang"
+          class="text-primary pr-1">#Golang</a>
+        
+        <a href="/tags/json"
+          class="text-primary pr-1">#J s o n</a>
+        
         <div class="content mb-5 pt-3">
-          <h1 id="json-marsheling-and-unmarshaling">JSON Marsheling and Unmarshaling</h1>
-<p>Most of the communication that happens over REST involves passing data as JSON.
+          <p>Most of the communication that happens over REST involves passing data as JSON.
 JSON is a language-independent data format, but when we use it in our programs it is basically a string.We need to make sure that our JSON string is always valid JSON object this can be hard when we have a complex Struct that contains many fields. Marsheling and Unmarshaling objects helps us achieve that.
 Marsheling is the operation of converting Go objects into JSON strings.
 Unmarshalling is the operation of converting JSON strings into Go objects.</p>
@@ -149,14 +154,34 @@ To convert it to a JSON we use the json.Marshal method from the encoding/json pa
 </span><span style="color:#228b22"></span>        }
     <span style="color:#8b008b;font-weight:bold">return</span> &amp;p
 }
-</code></pre></div><h2 id="faster-json-marshal-and-unmarshal">Faster JSON marshal and unmarshal:</h2>
+</code></pre></div><h2 id="faster-json-marshal-and-unmarshal">Faster JSON Marshal and Unmarshal:</h2>
 <p>The JSON marshaling and unmarshaling provided by the encoding/json package uses reflection to figure out values and types each time. Reflection, provided by the reflect package, takes time to figure out types and values each time a message is acted on (in Go is fairly fast).
 If you’re repeatedly acting on the same structures, quite a bit of time will be spent reflecting.
 Additionally, reflection allocates memory that needs to be garbage-collected, and there’s a small computational cost to that as well.</p>
-<p>The solution is to use optimized generated code</p>
+<p>There are a number of packages outside the standard library that aim to solve this problem.
+In this blog post we will cover the Codec Package which is very fast and popular but there are other good alternatives that will not be covered here such as:</p>
+<ul>
+<li><a href="https://pkg.go.dev/github.com/mailru/easyjson">easyjson</a></li>
+<li><a href="https://pkg.go.dev/github.com/pquerna/ffjson/ffjson">ffjson</a></li>
+</ul>
+<p>The reason I choose to talk about Codec is that it is just considered more stable (currently as time goes by things will change).</p>
 <h3 id="codec">Codec</h3>
-<p>The package <a href="https://pkg.go.dev/github.com/ugorji/go/codec?tab=doc">github.com/ugorji/go/codec</a>, provides a High Performance codec/encoding library for binc, msgpack, cbor, json formats.</p>
-<p>To use it we need to define our stract with the codec tag (instead of JSON):</p>
+<p>The package <a href="https://pkg.go.dev/github.com/ugorji/go/codec?tab=doc">github.com/ugorji/go/codec</a>, provides a High Performance codec/encoding library for binc, msgpack, cbor and json formats.</p>
+<p>It is important to note that with all its benefits it is not always safe to use codec, and you should look at the documentation for warnings.
+At the time of writing Codec is NOT safe for concurrent use, and state that the usage model is basically:</p>
+<ul>
+<li>Create and initialize the Handle before any use.
+Once created, DO NOT modify it.</li>
+<li>Multiple Encoders or Decoders can now use the Handle concurrently.
+They only read information off the Handle (never write).</li>
+<li>However, each Encoder or Decoder MUST not be used concurrently</li>
+<li>To re-use an Encoder/Decoder, call Reset(&hellip;) on it first.
+This allows you use state maintained on the Encoder/Decoder.</li>
+</ul>
+<p>Look at <a href="https://pkg.go.dev/github.com/ugorji/go/codec#hdr-Usage">Usage</a> for updates.</p>
+<p>The first thing we need to do is to install the package with go get:</p>
+<div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">go get github.com/ugorji/go/codec/codecgen
+</code></pre></div><p>To use it we first need to define our struct with the codec tag (instead of JSON):</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#228b22">// go:generate codecgen -o user_generated.go user.go
 </span><span style="color:#228b22"></span>
 <span style="color:#8b008b;font-weight:bold">type</span> User <span style="color:#8b008b;font-weight:bold">struct</span> {
@@ -165,7 +190,8 @@ Additionally, reflection allocates memory that needs to be garbage-collected, an
 }
 </code></pre></div><p>When we run:</p>
 <div class="highlight"><pre style="background-color:#eed;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">go generate ./
-</code></pre></div><p>go generate will see the first comment line of the file, which is specially formatted for it, and execute codecgen. The output file is named user_generated.go. In the generated file, you’ll notice that two public methods have been added to the User type:</p>
+</code></pre></div><p>go generate will see the first comment line of the file, which is specially formatted for it, and execute codecgen. The output file is named user_generated.go.
+In the generated file, you’ll notice that two public methods have been added to the User type:</p>
 <ul>
 <li>CodecEncodeSelf</li>
 <li>CodecDecodeSelf</li>
@@ -189,16 +215,7 @@ Additionally, reflection allocates memory that needs to be garbage-collected, an
 </span><span style="color:#228b22"></span>    }
     <span style="color:#8b008b;font-weight:bold">return</span> &amp;p
 }
-</code></pre></div><p>Note you have to install:
-go get -u github.com/ugorji/go/codec/codecgen</p>
-<h3 id="easyjson">Easyjson</h3>
-<p>TODO</p>
-<h2 id="sources">Sources:</h2>
-<ul>
-<li>Go in Practice, Published by Manning Publications, 2016.</li>
-<li></li>
-</ul>
-
+</code></pre></div>
         </div>
 
         

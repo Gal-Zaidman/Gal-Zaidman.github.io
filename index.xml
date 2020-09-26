@@ -6,10 +6,19 @@
     <description>Recent content on Gal Zaidman, Personal blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 25 Sep 2020 00:10:00 +0300</lastBuildDate>
+    <lastBuildDate>Sat, 26 Sep 2020 00:10:00 +0300</lastBuildDate>
     
 	<atom:link href="https://gal-zaidman.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>JSON Marsheling and Unmarshaling</title>
+      <link>https://gal-zaidman.github.io/blog/golang/json-marshal-and-unmarshal/</link>
+      <pubDate>Sat, 26 Sep 2020 00:10:00 +0300</pubDate>
+      
+      <guid>https://gal-zaidman.github.io/blog/golang/json-marshal-and-unmarshal/</guid>
+      <description>Most of the communication that happens over REST involves passing data as JSON.</description>
+    </item>
     
     <item>
       <title>Web Crawling In Golang With Colly</title>
@@ -17,7 +26,7 @@
       <pubDate>Fri, 25 Sep 2020 00:10:00 +0300</pubDate>
       
       <guid>https://gal-zaidman.github.io/blog/golang/web-crawling-in-go-with-colly-learn-go-by-doing/</guid>
-      <description>Web crawling in Go with Colly Before we start This tutorial was created while implementing a small project that required web crawling.</description>
+      <description>Before we start This tutorial was created while implementing a small project that required web crawling.</description>
     </item>
     
     <item>
