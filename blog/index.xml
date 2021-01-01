@@ -6,10 +6,19 @@
     <description>Recent content in Blogs on Gal Zaidman, Personal blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 26 Sep 2020 00:10:00 +0300</lastBuildDate>
+    <lastBuildDate>Fri, 01 Jan 2021 00:10:00 +0300</lastBuildDate>
     
 	<atom:link href="https://gal-zaidman.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Summing up 2020</title>
+      <link>https://gal-zaidman.github.io/blog/personal/summing-up-2020/</link>
+      <pubDate>Fri, 01 Jan 2021 00:10:00 +0300</pubDate>
+      
+      <guid>https://gal-zaidman.github.io/blog/personal/summing-up-2020/</guid>
+      <description>Now that we are in the middle of our third quarantine in Israel and can&amp;rsquo;t go out to celebrate the new year, my girlfriend suggested that we should have a nice romantic dinner, open a bottle of wine and try to sum up all of our achievements both personal and professional in 2020 and our hopes for 2021.</description>
+    </item>
     
     <item>
       <title>JSON Marsheling and Unmarshaling</title>
